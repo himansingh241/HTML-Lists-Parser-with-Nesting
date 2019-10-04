@@ -2,24 +2,32 @@
     #include"y.tab.h"
 %}
 
-liStartTag         "<li>"
-olStartTag         "<ol>"
-ulStartTag         "<ul>"
+liStartTag         "<li"
+olStartTag         "<ol"
+ulStartTag         "<ul"
+closeTag            ">"
 liEndTag         "</li>"
 olEndTag         "</ol>"
 ulEndTag         "</ul>"
 ws               [\r\n\t ]
+compact          " compact"
+reversed         " reversed"
+start            " start="
+value            " value="
+olattr           {compact}|{reversed}|{start}|{type}
+ulattr           {compact}|{reversed}|{start}|{type}
+liattr           {value}
 
 %%
-{liStartTag} {
+{liStartTag}(({value}\"[0-9]+\")?)*{closeTag} {
     return LI_START_TAG;
 }
 
-{olStartTag} {
+{olStartTag}(({reversed}|({start}\"[0-9]+\")|{compact})?)*{closeTag} {
     return OL_START_TAG;
 }
 
-{ulStartTag} {
+{ulStartTag}{closeTag} {
     return UL_START_TAG;
 }
 
